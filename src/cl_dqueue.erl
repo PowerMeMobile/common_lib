@@ -28,6 +28,8 @@
 %%% POSSIBILITY OF SUCH DAMAGE.
 -module(cl_dqueue).
 
+-include("cl.hrl").
+
 %%% OPEN/CLOSE EXPORTS
 -export([close/1, open/1]).
 
@@ -197,7 +199,7 @@ item_extract(Dets, Key) ->
 
 
 item_insert(Dets, Item, Priority) ->
-    Key = now(),
+    Key = ?UNIQUE, %% replace with some incremental int that may be part of dqueue structure
     ok = dets:insert(Dets, {Key, Priority, Item}),
     Key.
 
@@ -205,4 +207,3 @@ item_insert(Dets, Item, Priority) ->
 item_lookup(Dets, Key) ->
     [{Key, _Priority, Item}] = dets:lookup(Dets, Key),
     Item.
-
